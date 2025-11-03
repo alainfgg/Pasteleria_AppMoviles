@@ -9,12 +9,15 @@ import kotlinx.coroutines.flow.Flow
 
 class ProductoRepository (private val productoDao: ProductoDao){
 
-    suspend fun insertarProducto(producto: Producto){
-        productoDao.insertarProducto(producto)
+    fun obtenerPedidos(): Flow<List<Producto>> {
+        return productoDao.obtenerProductos()
     }
 
-    fun obtenerProductos(): Flow<List<Producto>> {
-        return productoDao.obtenerProductos()
+    suspend fun obtenerPedidosSimple(): List<Producto>{
+        return productoDao.obtenerTodoSimple()
+    }
+    suspend fun guardarPedido(producto: Producto) {
+        productoDao.insertarProducto(producto)
     }
 
 }
