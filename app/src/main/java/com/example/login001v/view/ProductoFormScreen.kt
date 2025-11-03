@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 
 
 import androidx.compose.material3.BottomAppBar
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -44,6 +46,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.login001v.data.model.Producto
 import com.example.login001v.viewmodel.ProductoViewModel
+import com.example.login001v.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi:: class)
 @Composable
@@ -96,15 +99,32 @@ fun ProductoFormScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         )// fin Column
         { // inicio contenido
-        item {
-            Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery),
-                contentDescription = "Imagen Producto",
-                modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth()
-            )// fin Image
+            item {
+                val imageId = when (nombre) {
 
+                    "Torta de Chocolate" -> R.drawable.chocolate
+                    "Torta de Frutas" -> R.drawable.frutas
+                    "Torta de Vainilla" -> R.drawable.vainilla
+                    "Torta de Manjar" -> R.drawable.manjar
+                    "Mousse de Chocolate" -> R.drawable.mousse
+                    // Imagen por defecto si no coincide
+                    else -> R.drawable.logo
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = imageId),
+                        contentDescription = nombre,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .height(150.dp)
+                            .fillMaxWidth()
+                    )
+                }
             Spacer(modifier = Modifier.height(16.dp))
         }
         item {
