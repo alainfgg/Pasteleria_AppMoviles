@@ -18,7 +18,8 @@
             android:theme="@style/Theme.Login001V">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <!-- permiso para peticiones http-->
+                <uses-permission android:name = "android.permission.INTERNET" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
