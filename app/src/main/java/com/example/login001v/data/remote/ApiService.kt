@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface ApiService {
     //DEFINE SOL GET AL ENDPOINT /posts
-    @GET(/"posts")
+    @GET("/post")
     suspend fun getPosts(): List<Post>
 }

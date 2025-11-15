@@ -9,14 +9,23 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.login001v.ui.postscreen.PostScreen
+import com.example.login001v.ui.theme.ApiRestTheme
 import com.example.login001v.ui.theme.Tema
 import com.example.login001v.view.AppNavigation
 
 class MainActivity : ComponentActivity() {
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            ApiRestTheme{
+                val postViewModel: com.example.login001v.viewmodel.PostViewModel = viewModel()
+                PostScreen(viewModel = postViewModel)
+            }
 
             Tema {
                 Surface(
