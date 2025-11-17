@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.QuestionAnswer
 import androidx.compose.material.icons.filled.BakeryDining
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.selects.select
 
 
 @Composable
@@ -149,7 +151,17 @@ fun DrawerMenu(
                     icon = { Icon(Icons.Default.Info, "Contacto") }
                 )
             }
-
+            item {
+                Divider(modifier = Modifier.padding(vertical = 8.dp)) // Separador
+            }
+            item{
+                NavigationDrawerItem(
+                    label = {Text("API REST")},
+                    selected = false,
+                    onClick = {navController.navigate("post")},
+                    icon = {Icon (Icons.Default.AccessTime, "API REST")}
+                )
+            }
 
         }// fin Lazy
 

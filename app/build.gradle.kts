@@ -73,12 +73,25 @@ dependencies {
 
     //corrutinas!!
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
-
+    //testing
     testImplementation(libs.junit)
+
+    testImplementation("io.kotest:kotest-runner-junnit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("io.mockk:mockk:1.13.10")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.2")
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //config JUnit5
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+    }
 }
