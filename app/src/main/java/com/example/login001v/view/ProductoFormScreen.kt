@@ -26,7 +26,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-
+import android.content.Intent
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,8 +60,9 @@ fun ProductoFormScreen(
     navController: NavController,
     nombre:String,
     precio:String
-){// Inicio
-
+    )
+    {
+    val context = LocalContext.current
     var cantidad by remember{ mutableStateOf(TextFieldValue("")) }
     var direccion by remember{ mutableStateOf(TextFieldValue("")) }
 
@@ -132,6 +139,31 @@ fun ProductoFormScreen(
             Text(text = "Precio Base: $precio", style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(16.dp))
         }
+            item {
+                //inicio nativo
+                OutlinedButton(
+                    onClick = {
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(Intent.EXTRA_TEXT, "¡Oye! Mira esta $nombre que venden en Mil Sabores a $precio 🍰😋.")
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, "Compartir Torta")
+                        context.startActivity(shareIntent)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Compartir",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Compartir")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }//fin nativo
+
+
             // CAMPOS DE PERSONALIZACIÓN
         item{
             // CBX tamaño

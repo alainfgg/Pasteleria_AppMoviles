@@ -5,17 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.login001v.data.dao.ProductoDao
+import com.example.login001v.data.dao.UsuarioDao
 import com.example.login001v.data.model.Producto
+import com.example.login001v.data.model.Usuario
 
 
 @Database(
-    entities = [Producto::class],
-    version=1,
+    entities = [Producto::class, Usuario::class],
+    version=2, //nueva versión 😦
     exportSchema = false   // evita warning
 )
 
 abstract class ProductoDatabase: RoomDatabase(){
     abstract fun productoDao(): ProductoDao
+    abstract fun usuarioDao(): UsuarioDao
 
     companion object{
         @Volatile
@@ -27,18 +30,12 @@ abstract class ProductoDatabase: RoomDatabase(){
                     context.applicationContext,
                     ProductoDatabase::class.java,
                     "producto_database"
-                ).build() // builder
-                INSTANCE = instance
-                instance
+                )
+                    .fallbackToDestructiveMigration()
+                    .build() // builder
+                    INSTANCE = instance
+                    instance
             } // fin return
-
-
-
-        }
-
+        }//fin fun
     }// fin companion
-
-
-
-
 }// fin abstract

@@ -19,7 +19,7 @@ fun AppNavigation() {
 
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = "drawerMenu/{user}"
     ) {
 
         composable("login") {
@@ -51,24 +51,27 @@ fun AppNavigation() {
         }
 
 
+
+
         composable(
             route = "drawerMenu/{user}",
             arguments = listOf(navArgument("user") { type = NavType.StringType })
         ) { backStackEntry ->
             val user = backStackEntry.arguments?.getString("user") ?: "Usuario"
-            DrawerMenu(username = user, navController = navController)
+            DrawerMenu(username = user,
+                navController = navController)
         }
 
         composable(
-            route = "ProductoFormScreen/{nombre}/{precio}",
+            route = "ProductoFormScreen/{username}/{precio}",
             arguments = listOf(
-                navArgument("nombre") { type = NavType.StringType },
+                navArgument("username") { type = NavType.StringType },
                 navArgument("precio") { type = NavType.StringType }
             )
         ) { backStackEntry ->
-            val nombre = backStackEntry.arguments?.getString("nombre") ?: ""
+            val username = backStackEntry.arguments?.getString("username") ?: ""
             val precio = backStackEntry.arguments?.getString("precio") ?: ""
-            ProductoFormScreen(navController = navController, nombre = nombre, precio = precio)
+            ProductoFormScreen(navController = navController, username = username, precio = precio)
         }
         composable("faq") {
             FaqScreen(onNavigateBack = { navController.popBackStack() })

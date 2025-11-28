@@ -1,52 +1,63 @@
 package com.example.login001v.ui.registro
 
+import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.login001v.data.database.ProductoDatabase
+import com.example.login001v.data.model.Usuario
+import com.example.login001v.data.repository.AuthRepository
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Period
 
-class RegistroViewModel : ViewModel() {
+class RegistroViewModel (application: Application) : AndroidViewModel(application) {
 
     var uiState by mutableStateOf(RegistroUiState())
         private set
-
     // funciones para actualizar el estado desde la UI
-
+    private val repo: AuthRepository = AuthRepository(
+        ProductoDatabase.getDatabase(application).usuarioDao()
+    )
     fun onNombreChange(value: String) {
         uiState = uiState.copy(nombre = value, error = null, success = null)
     }
-
     fun onEmailChange(value: String) {
         uiState = uiState.copy(email = value, error = null, success = null)
     }
-
     fun onPasswordChange(value: String) {
         uiState = uiState.copy(password = value, error = null, success = null)
     }
-
     fun onFechaNacimientoChange(value: LocalDate) {
         uiState = uiState.copy(fechaNacimiento = value, error = null, success = null)
     }
-
     fun onCodigoDescuentoChange(value: String) {
         uiState = uiState.copy(codigoDescuento = value, error = null, success = null)
     }
-
-
+    @RequiresApi(Build.VERSION_CODES.O)
     fun submit(onSuccess: () -> Unit) {
         uiState = uiState.copy(isLoading = true, error = null, success = null)
 
         // validaciones (si alguna falla, para y muestra error
         if (!validarCamposVacios()) return
         if (!validarPassword()) return
-        if (!validarEmailDuoc()) return
+
 
         // solo cuenta como simulación, ya que no almacena nada
+        val nuevoUsuario = Usuario(
+            nombre = uiState.nombre.trim(),
+            email = uiState.email.trim(),
+            password = uiState.password,
+            fechaNacimiento = uiState.fechaNacimiento.toString() //
+        )
 
         val edad = calcularEdad()
         val usaCodigoFelices50 = uiState.codigoDescuento.uppercase() == "FELICES50"
+        val esCorreoDuoc = uiState.email.endsWith("@duoc.cl") || uiState.email.endsWith("@profesor.duoc.cl")
 
         var mensajeExito = "¡Registro exitoso!"
         if (edad != null && edad > 50) {
@@ -60,6 +71,37 @@ class RegistroViewModel : ViewModel() {
 
         uiState = uiState.copy(isLoading = false, success = mensajeExito)
         onSuccess()
+
+        viewModelScope.launch {
+            val registroOk = repo.registrar(nuevoUsuario)
+
+            if (registroOk) {
+                // Lógica de beneficios (igual que antes)
+                val edad = calcularEdad()
+                val usaCodigoFelices50 = uiState.codigoDescuento.uppercase() == "FELICES50"
+                val esCorreoDuoc = uiState.email.endsWith("@duoc.cl") || uiState.email.endsWith("@profesor.duoc.cl")
+
+                var mensajeExito = "¡Registro exitoso!"
+
+                if (edad != null && edad > 50)
+                {
+                    mensajeExito += " (Descuento 50% aplicado)"
+                }
+
+                if (usaCodigoFelices50)
+                {
+                    mensajeExito += " (Descuento 10% aplicado)"
+                }
+                if (esCorreoDuoc) {
+                    mensajeExito += "\n• Beneficio Torta Duoc activado 🎓"
+                }
+                uiState = uiState.copy(isLoading = false, success = mensajeExito)
+                onSuccess()
+            } else {
+                uiState = uiState.copy(isLoading = false, error = "El correo ya está registrado.")
+            }
+        }
+
     }
 
     private fun validarCamposVacios(): Boolean {
@@ -81,24 +123,10 @@ class RegistroViewModel : ViewModel() {
         }
         return true
     }
-
-    private fun validarEmailDuoc(): Boolean {
-        val email = uiState.email.trim()
-        if (!email.endsWith("@duoc.cl") && !email.endsWith("@profesor.duoc.cl")) {
-            uiState = uiState.copy(
-                error = "Debes usar un correo @duoc.cl o @profesor.duoc.cl.",
-                isLoading = false
-            )
-            return false
-        }
-        return true
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun calcularEdad(): Int? {
         // > 50 años
-        uiState.fechaNacimiento?.let {
-            return Period.between(it, LocalDate.now()).years
-        }
+        uiState.fechaNacimiento?.let { return Period.between(it, LocalDate.now()).years }
         return null
     }
 }
