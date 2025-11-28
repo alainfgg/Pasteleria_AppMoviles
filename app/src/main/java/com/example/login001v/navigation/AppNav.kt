@@ -71,7 +71,7 @@ fun AppNavigation() {
         ) { backStackEntry ->
             val username = backStackEntry.arguments?.getString("username") ?: ""
             val precio = backStackEntry.arguments?.getString("precio") ?: ""
-            ProductoFormScreen(navController = navController, username = username, precio = precio)
+            ProductoFormScreen(navController = navController, nombre = username, precio = precio)
         }
         composable("faq") {
             FaqScreen(onNavigateBack = { navController.popBackStack() })

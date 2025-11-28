@@ -7,14 +7,25 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.AccessTime // (Necesaria si se usa)
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.QuestionAnswer // (Necesaria si se usa)
+import androidx.compose.material.icons.filled.BakeryDining // <- Asegúrate de que esta y las siguientes estén importadas
+import androidx.compose.material.icons.filled.Cake
+import androidx.compose.material.icons.filled.Icecream // <-
+import androidx.compose.material.icons.filled.LunchDining // <-
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.login001v.ui.home.HomeScreen
@@ -78,14 +89,14 @@ fun DrawerMenu(
                             }
                         }
                         item {
-                            // Si no tienes Icecream, usa Star
-                            DrawerItem(Icons.Default.Star, "Torta de Frutas") {
+                            // Se usa Icecream si está importado, o Star como sustituto
+                            DrawerItem(Icons.Default.Icecream, "Torta de Frutas") {
                                 navigateToProduct("Torta Cuadrada de Frutas", "50000", navController, scope, drawerState)
                             }
                         }
                         item {
-                            // Si no tienes BakeryDining, usa Favorite
-                            DrawerItem(Icons.Default.Favorite, "Torta de Vainilla") {
+                            // Se usa BakeryDining si está importado, o Favorite como sustituto
+                            DrawerItem(Icons.Default.BakeryDining, "Torta de Vainilla") {
                                 navigateToProduct("Torta Circular de Vainilla", "40000", navController, scope, drawerState)
                             }
                         }
@@ -100,13 +111,13 @@ fun DrawerMenu(
                         item { DrawerSectionTitle("🍮 Postres Individuales") }
 
                         item {
-                            // Si no tienes LunchDining, usa ShoppingCart
-                            DrawerItem(Icons.Default.ShoppingCart, "Mousse de Chocolate") {
+                            // Se usa LunchDining si está importado, o ShoppingCart como sustituto
+                            DrawerItem(Icons.Default.LunchDining, "Mousse de Chocolate") {
                                 navigateToProduct("Mousse de Chocolate", "5000", navController, scope, drawerState)
                             }
                         }
                         item {
-                            DrawerItem(Icons.Default.ShoppingCart, "Tiramisú Clásico") {
+                            DrawerItem(Icons.Default.LunchDining, "Tiramisú Clásico") {
                                 navigateToProduct("Tiramisú Clásico", "5500", navController, scope, drawerState)
                             }
                         }
@@ -116,7 +127,6 @@ fun DrawerMenu(
                         item { DrawerSectionTitle("☕ Cafetería") }
 
                         item {
-                            // Usamos iconos genéricos para asegurar que compile
                             DrawerItem(Icons.Default.Home, "Empanada de Manzana") {
                                 navigateToProduct("Empanada de Manzana", "3000", navController, scope, drawerState)
                             }
@@ -127,7 +137,7 @@ fun DrawerMenu(
                             }
                         }
 
-                        // SECCIÓN 4: AYUDA
+                        // SECCIÓN 4: CONFIGURACIÓN/AYUDA
                         item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
                         item { DrawerSectionTitle("⚙️ Configuración") }
 
@@ -141,6 +151,14 @@ fun DrawerMenu(
                             DrawerItem(Icons.Default.Phone, "Contacto") {
                                 scope.launch { drawerState.close() }
                                 navController.navigate("info")
+                            }
+                        }
+
+                        // Nuevo elemento de API REST
+                        item {
+                            DrawerItem(Icons.Default.AccessTime, "API REST") {
+                                scope.launch { drawerState.close() }
+                                navController.navigate("post")
                             }
                         }
 
@@ -163,6 +181,17 @@ fun DrawerMenu(
 
                         item { Spacer(modifier = Modifier.height(24.dp)) }
                     }
+
+                    // --- FOOTER ---
+                    // Agregado el footer de la versión duplicada
+                    Text(
+                        text="Pastelería Mil Sabores, 2025",
+                        style=MaterialTheme.typography.bodySmall,
+                        modifier=Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
                 }
             }
         ) {
@@ -176,8 +205,10 @@ fun DrawerMenu(
     }
 }
 
-// --- FUNCIONES AUXILIARES (¡NO LAS BORRES!) ---
 
+// --- FUNCIONES AUXILIARES ---
+
+// La anotación @Preview estaba aquí en el código original, pero se suele omitir en producción
 @Composable
 fun DrawerSectionTitle(title: String) {
     Text(
