@@ -9,8 +9,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.login001v.ui.login.LoginScreen
+import com.example.login001v.ui.postscreen.PostScreen
 import com.example.login001v.ui.registro.RegistroScreen
 import com.example.login001v.view.faq.FaqScreen
+import com.example.login001v.viewmodel.PostViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -80,8 +83,9 @@ fun AppNavigation() {
         composable("info") {
             InfoScreen(onNavigateBack = { navController.popBackStack() })
         }
-
-
-
+        composable("post"){
+            val vm: PostViewModel = viewModel()
+            PostScreen(viewModel = vm)
+        }
     }
 }
