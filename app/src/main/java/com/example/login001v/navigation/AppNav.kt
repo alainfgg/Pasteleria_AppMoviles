@@ -14,6 +14,7 @@ import com.example.login001v.ui.registro.RegistroScreen
 import com.example.login001v.view.faq.FaqScreen
 import com.example.login001v.viewmodel.PostViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.login001v.ui.recetas.RecetasScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -24,7 +25,6 @@ fun AppNavigation() {
         navController = navController,
         startDestination = "drawerMenu/{user}"
     ) {
-
         composable("login") {
             LoginScreen(
                 onLoginSuccess = { username ->
@@ -39,7 +39,6 @@ fun AppNavigation() {
             )
         }
 
-
         composable("registro") {
             RegistroScreen(
                 onRegistroSuccess = {
@@ -52,9 +51,6 @@ fun AppNavigation() {
                 }
             )
         }
-
-
-
 
         composable(
             route = "drawerMenu/{user}",
@@ -86,6 +82,9 @@ fun AppNavigation() {
         composable("post"){
             val vm: PostViewModel = viewModel()
             PostScreen(viewModel = vm)
+        }
+        composable("recetas"){
+            RecetasScreen()
         }
     }
 }

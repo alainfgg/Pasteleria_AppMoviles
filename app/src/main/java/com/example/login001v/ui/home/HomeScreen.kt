@@ -27,17 +27,14 @@ import androidx.navigation.NavController
 import com.example.login001v.R
 import com.example.login001v.ui.theme.Tema
 
-// --- CLASES DE DATOS SIMPLES PARA LA VISTA ---
 data class ProductoDisplay(val nombre: String, val precio: String, val imageRes: Int)
 
-// --- DATOS FICTICIOS ---
 val ofertasList = listOf(
     // Asegúrate de tener estas imágenes en res/drawable o cambia los R.drawable.x
     ProductoDisplay("Mousse de Chocolate", "4500", R.drawable.mousse),
     ProductoDisplay("Torta de Frutas", "48000", R.drawable.frutas),
     ProductoDisplay("Torta de Manjar", "40000", R.drawable.manjar)
 )
-
 val destacadosList = listOf(
     ProductoDisplay("Torta de Chocolate", "45000", R.drawable.chocolate),
     ProductoDisplay("Torta de Vainilla", "40000", R.drawable.vainilla),
@@ -48,11 +45,9 @@ val destacadosList = listOf(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    // --- ESTOS SON LOS PARÁMETROS QUE FALTABAN ---
     username: String,
     navController: NavController,
     onOpenDrawer: () -> Unit
-    // ---------------------------------------------
 ) {
     Tema {
         Scaffold(
@@ -133,9 +128,6 @@ fun HomeScreen(
         }
     }
 }
-
-// --- COMPONENTES DE UI ---
-
 @Composable
 fun HeroBanner() {
     Card(
@@ -147,7 +139,6 @@ fun HeroBanner() {
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Box {
-            // Imagen de fondo del banner (cambia R.drawable.logo si quieres otra)
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Banner",
@@ -176,7 +167,7 @@ fun HeroBanner() {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    "30% dcto. en tortas enteras",
+                    "Si perteneces a Duoc, y estás de cumpleaños, ¡Canjea una torta gratis con nosotros!",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White
                 )
@@ -223,7 +214,7 @@ fun OfertaCard(producto: ProductoDisplay, onClick: () -> Unit) {
                 Text(
                     text = "$${producto.precio}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }

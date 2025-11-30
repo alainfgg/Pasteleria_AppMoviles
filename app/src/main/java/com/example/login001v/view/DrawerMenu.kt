@@ -137,7 +137,7 @@ fun DrawerMenu(
                             }
                         }
 
-                        // SECCIÓN 4: CONFIGURACIÓN/AYUDA
+
                         item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
                         item { DrawerSectionTitle("⚙️ Configuración") }
 
@@ -153,12 +153,11 @@ fun DrawerMenu(
                                 navController.navigate("info")
                             }
                         }
-
-                        // Nuevo elemento de API REST
+                        item { DrawerSectionTitle("🌐 Neurona Dulce (API)") }
                         item {
-                            DrawerItem(Icons.Default.AccessTime, "API REST") {
+                            DrawerItem(Icons.Default.Search, "Ideas de Postres") {
                                 scope.launch { drawerState.close() }
-                                navController.navigate("post")
+                                navController.navigate("recetas")
                             }
                         }
 
@@ -179,11 +178,10 @@ fun DrawerMenu(
                             )
                         }
 
+
+
                         item { Spacer(modifier = Modifier.height(24.dp)) }
                     }
-
-                    // --- FOOTER ---
-                    // Agregado el footer de la versión duplicada
                     Text(
                         text="Pastelería Mil Sabores, 2025",
                         style=MaterialTheme.typography.bodySmall,
@@ -205,10 +203,6 @@ fun DrawerMenu(
     }
 }
 
-
-// --- FUNCIONES AUXILIARES ---
-
-// La anotación @Preview estaba aquí en el código original, pero se suele omitir en producción
 @Composable
 fun DrawerSectionTitle(title: String) {
     Text(
