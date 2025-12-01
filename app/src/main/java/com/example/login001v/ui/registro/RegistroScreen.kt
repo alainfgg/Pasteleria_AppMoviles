@@ -130,14 +130,6 @@ fun RegistroScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
-                    value = state.codigoDescuento,
-                    onValueChange = vm::onCodigoDescuentoChange,
-                    label = { Text("Código Descuento (Opcional)") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(0.9f)
-                )
-                Spacer(modifier = Modifier.height(24.dp))
 
                 // mensajes error/éxito
                 if (state.error != null) {

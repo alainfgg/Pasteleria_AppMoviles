@@ -35,9 +35,7 @@ class RegistroViewModel (application: Application) : AndroidViewModel(applicatio
     fun onFechaNacimientoChange(value: LocalDate) {
         uiState = uiState.copy(fechaNacimiento = value, error = null, success = null)
     }
-    fun onCodigoDescuentoChange(value: String) {
-        uiState = uiState.copy(codigoDescuento = value, error = null, success = null)
-    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun submit(onSuccess: () -> Unit) {
         uiState = uiState.copy(isLoading = true, error = null, success = null)
@@ -56,16 +54,13 @@ class RegistroViewModel (application: Application) : AndroidViewModel(applicatio
         )
 
         val edad = calcularEdad()
-        val usaCodigoFelices50 = uiState.codigoDescuento.uppercase() == "FELICES50"
         val esCorreoDuoc = uiState.email.endsWith("@duoc.cl") || uiState.email.endsWith("@profesor.duoc.cl")
 
         var mensajeExito = "¡Registro exitoso!"
         if (edad != null && edad > 50) {
             mensajeExito += " (Descuento 50% aplicado)" // > 50 años
         }
-        if (usaCodigoFelices50) {
-            mensajeExito += " (Descuento 10% aplicado)" // cod desc "FELICES50"
-        }
+
         // Torta Duoc
         mensajeExito += " (Beneficio Torta Duoc activado)"
 
@@ -78,7 +73,7 @@ class RegistroViewModel (application: Application) : AndroidViewModel(applicatio
             if (registroOk) {
                 // Lógica de beneficios (igual que antes)
                 val edad = calcularEdad()
-                val usaCodigoFelices50 = uiState.codigoDescuento.uppercase() == "FELICES50"
+
                 val esCorreoDuoc = uiState.email.endsWith("@duoc.cl") || uiState.email.endsWith("@profesor.duoc.cl")
 
                 var mensajeExito = "¡Registro exitoso!"
@@ -88,10 +83,7 @@ class RegistroViewModel (application: Application) : AndroidViewModel(applicatio
                     mensajeExito += " (Descuento 50% aplicado)"
                 }
 
-                if (usaCodigoFelices50)
-                {
-                    mensajeExito += " (Descuento 10% aplicado)"
-                }
+
                 if (esCorreoDuoc) {
                     mensajeExito += "\n• Beneficio Torta Duoc activado 🎓"
                 }

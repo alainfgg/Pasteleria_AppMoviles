@@ -14,6 +14,8 @@ import com.example.login001v.ui.registro.RegistroScreen
 import com.example.login001v.view.faq.FaqScreen
 import com.example.login001v.viewmodel.PostViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.login001v.cart.CartScreen
+import com.example.login001v.view.OrderHistoryScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -47,7 +49,6 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateBack = {
-                    //  flecha arriba
                     navController.popBackStack()
                 }
             )
@@ -86,6 +87,12 @@ fun AppNavigation() {
         composable("post"){
             val vm: PostViewModel = viewModel()
             PostScreen(viewModel = vm)
+        }
+            composable("cart") {
+                CartScreen(navController = navController)
+        }
+        composable("order_history") {
+            OrderHistoryScreen(navController = navController)
         }
     }
 }

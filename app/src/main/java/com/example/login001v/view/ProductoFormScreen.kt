@@ -54,14 +54,26 @@ import com.example.login001v.data.model.Producto
 import com.example.login001v.viewmodel.ProductoViewModel
 import com.example.login001v.R
 
+import androidx.compose.material.icons.filled.AddShoppingCart
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.rememberCoroutineScope
+import com.example.login001v.cart.CartItem
+import com.example.login001v.cart.CartViewModel
+import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi:: class)
 @Composable
 fun ProductoFormScreen(
     navController: NavController,
     nombre:String,
     precio:String
-    )
-    {
+)
+{
     val context = LocalContext.current
     var cantidad by remember{ mutableStateOf(TextFieldValue("")) }
     var direccion by remember{ mutableStateOf(TextFieldValue("")) }
@@ -85,14 +97,44 @@ fun ProductoFormScreen(
 // conectamos al viewmodel
     val viewModel: ProductoViewModel =viewModel()
 
-    // observa directamente los productos
+    // Implementación del carrito
+    val cartViewModel: CartViewModel = viewModel()
+    val cartItems by cartViewModel.cartItems.collectAsState() // Para el contador
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+
     val productos : List<Producto> by viewModel.productos.collectAsState()
 
     Scaffold (
+        // Host para mensajes y botón flotante
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate("cart") },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                BadgedBox(
+                    badge = {
+                        if (cartItems.isNotEmpty()) {
+                            Badge { Text(cartItems.size.toString()) }
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "Ver Carrito",
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
+            }
+        },
+
         bottomBar = {
             BottomAppBar {
-            } // fin Bootom App
-        }// fin bottom
+            }
+        }
 
     ) // fin Scaffold
 
@@ -114,7 +156,7 @@ fun ProductoFormScreen(
                     "Torta de Vainilla" -> R.drawable.vainilla
                     "Torta de Manjar" -> R.drawable.manjar
                     "Mousse de Chocolate" -> R.drawable.mousse
-                    // Imagen por defecto si no coincide
+
                     else -> R.drawable.logo
                 }
                 Box(
@@ -132,13 +174,13 @@ fun ProductoFormScreen(
                             .fillMaxWidth()
                     )
                 }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        item {
-            Text(text = nombre, style = MaterialTheme.typography.headlineSmall)
-            Text(text = "Precio Base: $precio", style = MaterialTheme.typography.bodyLarge)
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            item {
+                Text(text = nombre, style = MaterialTheme.typography.headlineSmall)
+                Text(text = "Precio Base: $precio", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
             item {
                 //inicio nativo
                 OutlinedButton(
@@ -164,39 +206,39 @@ fun ProductoFormScreen(
             }//fin nativo
 
 
-            // CAMPOS DE PERSONALIZACIÓN
-        item{
-            // CBX tamaño
-            ExposedDropdownMenuBox(
-                expanded = expandedTamano,
-                onExpandedChange = { expandedTamano = !expandedTamano },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TextField(
-                    value = selectedTamano,
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text("Tamaño") },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedTamano) },
-                    modifier = Modifier.menuAnchor().fillMaxWidth()
-                )
-                ExposedDropdownMenu(
+            // Campos de personalización
+            item{
+                // CBX tamaño
+                ExposedDropdownMenuBox(
                     expanded = expandedTamano,
-                    onDismissRequest = { expandedTamano = false }
+                    onExpandedChange = { expandedTamano = !expandedTamano },
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    tamanoOptions.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(option) },
-                            onClick = {
-                                selectedTamano = option
-                                expandedTamano = false
-                            }
-                        )
+                    TextField(
+                        value = selectedTamano,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Tamaño") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedTamano) },
+                        modifier = Modifier.menuAnchor().fillMaxWidth()
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expandedTamano,
+                        onDismissRequest = { expandedTamano = false }
+                    ) {
+                        tamanoOptions.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option) },
+                                onClick = {
+                                    selectedTamano = option
+                                    expandedTamano = false
+                                }
+                            )
+                        }
                     }
                 }
+                Spacer(modifier =Modifier.height(16.dp))
             }
-            Spacer(modifier =Modifier.height(16.dp))
-        }
             item {
                 // CBX forma
                 ExposedDropdownMenuBox(
@@ -259,99 +301,55 @@ fun ProductoFormScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
             item {
+                // Boton para añadir al carrito
                 Button(
                     onClick = {
-                        val producto = Producto(
-                            nombre = nombre,
-                            precio = precio,
-                            cantidad = cantidad.text,
-                            direccion = direccion.text,
+                        val imageId = when (nombre) {
+                            "Torta de Chocolate" -> R.drawable.chocolate
+                            "Torta de Frutas" -> R.drawable.frutas
+                            "Torta de Vainilla" -> R.drawable.vainilla
+                            "Torta de Manjar" -> R.drawable.manjar
+                            "Mousse de Chocolate" -> R.drawable.mousse
+                            else -> R.drawable.logo
+                        }
+                        // Limpieza del precio
+                        val precioInt = precio.replace("$", "").replace(".", "").toIntOrNull() ?: 0
+                        val cantidadInt = cantidad.text.toIntOrNull() ?: 1
 
+                        val itemCarrito = CartItem(
+                            nombre = nombre,
+                            precioUnitario = precioInt,
+                            cantidad = cantidadInt,
+                            imagenResId = imageId,
                             tamano = selectedTamano,
                             forma = selectedForma,
-                            mensaje = mensaje.text
+                            mensaje = mensaje.text,
+                            direccion = direccion.text
                         )
-                        viewModel.guardarProducto(producto)
+
+                        cartViewModel.addToCart(itemCarrito)
+
+                        scope.launch {
+                            snackbarHostState.showSnackbar("¡$nombre añadido al carrito!")
+                        }
                     },
                     // verificación de los datos
                     enabled = cantidad.text.isNotBlank() &&
                             direccion.text.isNotBlank() &&
                             selectedTamano.isNotBlank() &&
-                            selectedForma.isNotBlank()
+                            selectedForma.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth()
                 ) // fin Button
                 {
-                    Text("Confirmar Pedido")
+                    Icon(Icons.Default.AddShoppingCart, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Añadir al Carrito")
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                // Espacio extra para que el FAB no tape contenido
+                Spacer(modifier = Modifier.height(80.dp))
             }
 
-            item {
-                // mostrar Productos guardados
-                Text("Pedidos realizados :", style = MaterialTheme.typography.headlineSmall)
-
-                //  INICIO DE PRUEBA
-                // este texto nos dirá si la lista cambia
-                Text(
-                    text = "DEBUG: Total de pedidos en memoria: ${productos.size}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error
-                )
-                // FIN DE PRUEBA
-            }
-
-            if (productos.isNotEmpty()){
-                // de it.id a it.uuid
-                    items(productos, key = {producto -> producto.uuid}) { producto ->
-
-                            Card(
-                                modifier = Modifier
-                                    .animateItem()
-                                    .fillMaxWidth()
-                                    .padding(bottom = 4.dp, top = 8.dp)
-
-                            )// fin Card
-                            {// contenido Card
-                                Column(modifier = Modifier.padding(8.dp))
-                                { // contenido columna
-                                    Text(
-                                        text = "${producto.nombre} - ${producto.precio}",
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                    Text(
-                                        text = "Cantidad: ${producto.cantidad}",
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                    Text(
-                                        text = "Direccion: ${producto.direccion}",
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-
-                                    Text(
-                                        text = "Personalización: ${producto.tamano}, ${producto.forma}",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = FontWeight.Bold // Resaltado
-                                    )
-                                    if (producto.mensaje.isNotBlank()) {
-                                        Text(
-                                            text = "Mensaje: ${producto.mensaje}",
-                                            style = MaterialTheme.typography.bodyMedium
-                                        )
-
-                                } // fin contenido columna
-                            }// fin contenido card
-                    }// fin items
-                } // fin lazy
-            }// end if
-            else{
-                item {
-                    Text(
-                        text = "No hay pedidos realizados",
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-        } // fin else
+        } // fin else (LazyColumn content)
     } //Fin Contenido
 } // fin inner
 

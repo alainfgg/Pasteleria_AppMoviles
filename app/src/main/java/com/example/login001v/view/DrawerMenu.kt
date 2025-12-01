@@ -32,6 +32,8 @@ import com.example.login001v.ui.home.HomeScreen
 import com.example.login001v.ui.theme.Tema
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.material.icons.filled.ShoppingCart //PARA CARRITO
+import androidx.compose.material.icons.filled.Receipt // PARA HISTORIAL DE PEDIDOS (NUEVO)
 
 @Composable
 fun DrawerMenu(
@@ -153,6 +155,25 @@ fun DrawerMenu(
                                 navController.navigate("info")
                             }
                         }
+                        // SECCIÓN 5: CARRITO DE COMPRAS
+                        item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
+                        item { DrawerSectionTitle("🛒 Compras") }
+
+                        item {
+                            DrawerItem(Icons.Default.ShoppingCart, "Ver Carrito") {
+                                scope.launch { drawerState.close() }
+                                navController.navigate("cart")
+                            }
+                        }
+
+                        // --- NUEVO: PEDIDOS REALIZADOS ---
+                        item {
+                            DrawerItem(Icons.Default.Receipt, "Pedidos Realizados") {
+                                scope.launch { drawerState.close() }
+                                navController.navigate("order_history")
+                            }
+                        }
+                        // ---------------------------------
 
                         // Nuevo elemento de API REST
                         item {
