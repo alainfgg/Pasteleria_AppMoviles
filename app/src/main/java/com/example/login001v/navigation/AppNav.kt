@@ -16,6 +16,7 @@ import com.example.login001v.viewmodel.PostViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.login001v.cart.CartScreen
 import com.example.login001v.view.OrderHistoryScreen
+import com.example.login001v.ui.recetas.RecetasScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -49,6 +50,7 @@ fun AppNavigation() {
                     navController.popBackStack()
                 },
                 onNavigateBack = {
+                    //  flecha arriba
                     navController.popBackStack()
                 }
             )
@@ -93,6 +95,9 @@ fun AppNavigation() {
         }
         composable("order_history") {
             OrderHistoryScreen(navController = navController)
+        }
+        composable("recetas"){
+            RecetasScreen()
         }
     }
 }

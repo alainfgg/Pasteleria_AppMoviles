@@ -70,13 +70,14 @@ dependencies {
     //RETROFIT / GSON CONVERTER
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-
+    implementation("io.coil-kt:coil-compose:2.4.0")
     //corrutinas!!
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
     //testing
     testImplementation(libs.junit)
 
-    testImplementation("io.kotest:kotest-runner-junnit5:5.8.0")
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("io.kotest:kotest-assertions-core:5.8.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("io.mockk:mockk:1.13.10")
@@ -91,7 +92,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //config JUnit5
-    tasks.withType<Test>().configureEach {
-        useJUnitPlatform()
-    }
+    //esto daba error debido a que los testings funcionan en Junit 4
+    //tasks.withType<Test>().configureEach {
+    //    useJUnitPlatform()
+    //}
+    testImplementation(kotlin("test"))
 }
