@@ -20,12 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.login001v.ui.postscreen.PostScreen
-import com.example.login001v.ui.theme.ApiRestTheme
-import com.example.login001v.ui.theme.Tema
-import com.example.login001v.view.AppNavigation
-import com.example.login001v.ui.qr.QrScannerScreen
-import com.example.login001v.ui.qr.QrViewModel
+import com.example.login001v.view.postscreen.PostScreen
+import com.example.login001v.view.theme.ApiRestTheme
+import com.example.login001v.view.theme.Tema
+import com.example.login001v.common.AppNavigation
+import com.example.login001v.view.qr.QrScannerScreen
+import com.example.login001v.view.qr.QrViewModel
 
 class MainActivity : ComponentActivity() {
 

@@ -1,0 +1,13 @@
+package com.example.login001v.view.theme
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+private val ColorScheme = lightColorScheme()
+@Composable
+fun ApiRestTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = ColorScheme,
+        content = content
+    )
+}

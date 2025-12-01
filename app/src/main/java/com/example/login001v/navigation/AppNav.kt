@@ -1,4 +1,4 @@
-package com.example.login001v.view
+package com.example.login001v.common
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -8,14 +8,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.login001v.ui.login.LoginScreen
-import com.example.login001v.ui.postscreen.PostScreen
-import com.example.login001v.ui.registro.RegistroScreen
-import com.example.login001v.view.faq.FaqScreen
+import com.example.login001v.view.login.LoginScreen
+import com.example.login001v.view.postscreen.PostScreen
+import com.example.login001v.view.registro.RegistroScreen
+import com.example.login001v.view.common.faq.FaqScreen
 import com.example.login001v.viewmodel.PostViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.login001v.ui.cart.CartScreen
-import com.example.login001v.ui.recetas.RecetasScreen
+import com.example.login001v.view.cart.CartScreen
+import com.example.login001v.view.common.DrawerMenu
+import com.example.login001v.view.common.InfoScreen
+import com.example.login001v.view.common.OrderHistoryScreen
+import com.example.login001v.view.common.ProductoFormScreen
+import com.example.login001v.view.recetas.RecetasScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -63,8 +67,10 @@ fun AppNavigation() {
             arguments = listOf(navArgument("user") { type = NavType.StringType })
         ) { backStackEntry ->
             val user = backStackEntry.arguments?.getString("user") ?: "Usuario"
-            DrawerMenu(username = user,
-                navController = navController)
+            DrawerMenu(
+                username = user,
+                navController = navController
+            )
         }
 
         composable(
