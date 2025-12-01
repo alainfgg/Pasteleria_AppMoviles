@@ -1,9 +1,12 @@
-package com.example.login001v.cart
+package com.example.login001v.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.login001v.data.model.CartDao
+import com.example.login001v.data.model.CartItem
+import com.example.login001v.data.model.OrderItem
 
 @Database(entities = [CartItem::class , OrderItem::class], version = 2, exportSchema = false)
 abstract class CartDatabase : RoomDatabase() {

@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.login001v.cart.CartViewModel
+import com.example.login001v.ui.cart.CartViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 

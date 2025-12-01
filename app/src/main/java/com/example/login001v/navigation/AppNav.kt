@@ -14,8 +14,7 @@ import com.example.login001v.ui.registro.RegistroScreen
 import com.example.login001v.view.faq.FaqScreen
 import com.example.login001v.viewmodel.PostViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.login001v.cart.CartScreen
-import com.example.login001v.view.OrderHistoryScreen
+import com.example.login001v.ui.cart.CartScreen
 import com.example.login001v.ui.recetas.RecetasScreen
 
 @RequiresApi(Build.VERSION_CODES.O)

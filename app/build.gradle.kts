@@ -67,12 +67,34 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 
+    // Iconos extendidos (Necesario para Icons.Default.QrCodeScanner)
+    implementation("androidx.compose.material:material-icons-core")
+    implementation("androidx.compose.material:material-icons-extended")
+
     //RETROFIT / GSON CONVERTER
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
     //corrutinas!!
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+
+    // LiveData runtime para Compose (Necesario para observeAsState)
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+
+    // CameraX (Funcionalidad de cámara)
+    val camerax_version = "1.3.3" // >>> AGREGADO
+    implementation("androidx.camera:camera-core:$camerax_version")
+    implementation("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation("androidx.camera:camera-view:$camerax_version")
+
+    // ZXing (Librería base de códigos QR)
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    // ML Kit Barcode Scanning (Motor de detección rápido de Google)
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
     //testing
     testImplementation(libs.junit)
 

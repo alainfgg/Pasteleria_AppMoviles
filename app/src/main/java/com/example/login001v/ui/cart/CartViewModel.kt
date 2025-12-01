@@ -1,9 +1,8 @@
-package com.example.login001v.cart
+package com.example.login001v.ui.cart
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -16,6 +15,9 @@ import java.util.Locale
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.login001v.data.database.CartDatabase
+import com.example.login001v.data.model.CartItem
+import com.example.login001v.data.model.OrderItem
 
 class CartViewModel(application: Application) : AndroidViewModel(application) {
 

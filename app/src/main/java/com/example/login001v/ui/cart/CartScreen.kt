@@ -1,6 +1,5 @@
-package com.example.login001v.cart
+package com.example.login001v.ui.cart
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.login001v.R
+import com.example.login001v.data.model.CartItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -7,13 +7,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material.icons.filled.AccessTime // (Necesaria si se usa)
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.QuestionAnswer // (Necesaria si se usa)
-import androidx.compose.material.icons.filled.BakeryDining // <- Asegúrate de que esta y las siguientes estén importadas
+import androidx.compose.material.icons.filled.QuestionAnswer
+import androidx.compose.material.icons.filled.BakeryDining
 import androidx.compose.material.icons.filled.Cake
-import androidx.compose.material.icons.filled.Icecream // <-
-import androidx.compose.material.icons.filled.LunchDining // <-
+import androidx.compose.material.icons.filled.Icecream
+import androidx.compose.material.icons.filled.LunchDining
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -32,8 +32,11 @@ import com.example.login001v.ui.home.HomeScreen
 import com.example.login001v.ui.theme.Tema
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import androidx.compose.material.icons.filled.ShoppingCart //PARA CARRITO
-import androidx.compose.material.icons.filled.Receipt // PARA HISTORIAL DE PEDIDOS (NUEVO)
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.navigation.compose.rememberNavController
+import com.example.login001v.MainActivity
 
 @Composable
 fun DrawerMenu(
@@ -108,6 +111,8 @@ fun DrawerMenu(
                             }
                         }
 
+
+
                         // SECCIÓN 2: POSTRES
                         item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
                         item { DrawerSectionTitle("🍮 Postres Individuales") }
@@ -124,6 +129,8 @@ fun DrawerMenu(
                             }
                         }
 
+
+
                         // SECCIÓN 3: CAFETERÍA
                         item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
                         item { DrawerSectionTitle("☕ Cafetería") }
@@ -139,7 +146,54 @@ fun DrawerMenu(
                             }
                         }
 
+                        item { Spacer(modifier = Modifier.height(16.dp)) }
 
+                        item {
+                            NavigationDrawerItem(
+                                label = { Text("Escanear Catálogo") },
+                                selected = false,
+                                onClick = {
+                                    MainActivity.showCameraScreen = true
+                                },
+                                icon = { Icon(Icons.Default.QrCodeScanner, contentDescription = "QR") }
+                            )
+                        }
+
+
+                        // SECCION 4: NEURONA DULCE (API)
+                        item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
+                        item { DrawerSectionTitle("🌐 Neurona Dulce (API)") }
+
+                        item {
+                            DrawerItem(Icons.Default.Search, "Ideas de Postres") {
+                                scope.launch { drawerState.close() }
+                                navController.navigate("recetas")
+                            }
+                        }
+
+
+
+                        // SECCIÓN 5: CARRITO DE COMPRAS
+                        item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
+                        item { DrawerSectionTitle("🛒 Compras") }
+
+                        item {
+                            DrawerItem(Icons.Default.ShoppingCart, "Ver Carrito") {
+                                scope.launch { drawerState.close() }
+                                navController.navigate("cart")
+                            }
+                        }
+
+                        item {
+                            DrawerItem(Icons.Default.Receipt, "Pedidos Realizados") {
+                                scope.launch { drawerState.close() }
+                                navController.navigate("order_history")
+                            }
+                        }
+
+
+
+                        // SECCION 6: CONFIGURACIÓN
                         item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
                         item { DrawerSectionTitle("⚙️ Configuración") }
 
@@ -155,34 +209,7 @@ fun DrawerMenu(
                                 navController.navigate("info")
                             }
                         }
-                        item { DrawerSectionTitle("🌐 Neurona Dulce (API)") }
-                        // SECCIÓN 5: CARRITO DE COMPRAS
-                        item { Divider(modifier = Modifier.padding(vertical = 8.dp)) }
-                        item { DrawerSectionTitle("🛒 Compras") }
 
-                        item {
-                            DrawerItem(Icons.Default.ShoppingCart, "Ver Carrito") {
-                                scope.launch { drawerState.close() }
-                                navController.navigate("cart")
-                            }
-                        }
-
-                        // --- NUEVO: PEDIDOS REALIZADOS ---
-                        item {
-                            DrawerItem(Icons.Default.Receipt, "Pedidos Realizados") {
-                                scope.launch { drawerState.close() }
-                                navController.navigate("order_history")
-                            }
-                        }
-                        // ---------------------------------
-
-                        // Nuevo elemento de API REST
-                        item {
-                            DrawerItem(Icons.Default.Search, "Ideas de Postres") {
-                                scope.launch { drawerState.close() }
-                                navController.navigate("recetas")
-                            }
-                        }
 
                         item { Spacer(modifier = Modifier.height(16.dp)) }
 

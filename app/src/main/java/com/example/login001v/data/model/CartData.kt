@@ -1,14 +1,12 @@
-package com.example.login001v.cart
+package com.example.login001v.data.model
 
 import androidx.room.Dao
-import androidx.room.Database
 import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import androidx.room.RoomDatabase
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -44,7 +42,7 @@ interface CartDao {
     @Query("SELECT * FROM cart_items")
     fun getCartItems(): Flow<List<CartItem>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun insert(item: CartItem)
 
     @Update

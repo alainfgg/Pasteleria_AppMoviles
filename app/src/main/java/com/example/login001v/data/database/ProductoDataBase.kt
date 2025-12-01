@@ -12,8 +12,8 @@ import com.example.login001v.data.model.Usuario
 
 @Database(
     entities = [Producto::class, Usuario::class],
-    version=2, //nueva versión 😦
-    exportSchema = false   // evita warning
+    version=2, //nueva versión
+    exportSchema = false
 )
 
 abstract class ProductoDatabase: RoomDatabase(){
