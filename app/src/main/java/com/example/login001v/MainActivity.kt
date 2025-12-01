@@ -18,6 +18,8 @@ import com.example.login001v.view.AppNavigation
 
 class MainActivity : ComponentActivity() {
 
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,8 @@ class MainActivity : ComponentActivity() {
                     AppNavigation()
                 }
             }
+
+
         }
     }
 }

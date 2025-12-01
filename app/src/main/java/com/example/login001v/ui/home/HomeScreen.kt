@@ -78,8 +78,6 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.background),
                 contentPadding = PaddingValues(bottom = 20.dp)
             ) {
-
-                // 1. SALUDO
                 item {
                     Text(
                         text = "Hola, $username 👋",
@@ -88,13 +86,9 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }
-
-                // 2. HERO BANNER
                 item {
                     HeroBanner()
                 }
-
-                // 3. CARRUSEL
                 item {
                     SectionTitle("🔥 Ofertas del Día")
                     LazyRow(
@@ -110,8 +104,6 @@ fun HomeScreen(
                         }
                     }
                 }
-
-                // 4. DESTACADOS
                 item {
                     Spacer(modifier = Modifier.height(24.dp))
                     SectionTitle("🍰 Favoritos de la Casa")
