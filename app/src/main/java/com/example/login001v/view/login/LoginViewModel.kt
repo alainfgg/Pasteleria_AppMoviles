@@ -5,16 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.login001v.data.database.ProductoDatabase
+import com.example.login001v.data.database.AppDatabase
 import com.example.login001v.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val repo: AuthRepository = AuthRepository(
-        ProductoDatabase.getDatabase(application).usuarioDao()
-    )
-
+class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
     var uiState by mutableStateOf(LoginUiState())
 
     fun onUsernameChange(value: String) {
@@ -39,7 +36,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         // llamada asíncrona a la bd
         viewModelScope.launch {
             try {
-                val loginExitoso = repo.login(uiState.username.trim(), uiState.password)
+                val loginExitoso = repository.login(uiState.username.trim(), uiState.password)
 
                 if (loginExitoso) {
                     onSuccess(uiState.username.trim())

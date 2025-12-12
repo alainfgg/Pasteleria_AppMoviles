@@ -7,22 +7,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.login001v.data.database.ProductoDatabase
+import com.example.login001v.data.database.AppDatabase
 import com.example.login001v.data.model.Usuario
 import com.example.login001v.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.Period
 
-class RegistroViewModel (application: Application) : AndroidViewModel(application) {
-
+class RegistroViewModel(private val repo: AuthRepository) : ViewModel() {
     var uiState by mutableStateOf(RegistroUiState())
         private set
     // funciones para actualizar el estado desde la UI
-    private val repo: AuthRepository = AuthRepository(
-        ProductoDatabase.getDatabase(application).usuarioDao()
-    )
     fun onNombreChange(value: String) {
         uiState = uiState.copy(nombre = value, error = null, success = null)
     }

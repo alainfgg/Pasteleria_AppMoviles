@@ -30,7 +30,6 @@ fun AppNavigation() {
         navController = navController,
         startDestination = "drawerMenu/{user}"
     ) {
-
         composable("login") {
             LoginScreen(
                 onLoginSuccess = { username ->

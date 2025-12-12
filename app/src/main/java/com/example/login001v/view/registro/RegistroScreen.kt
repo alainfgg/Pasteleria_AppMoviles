@@ -1,5 +1,6 @@
 package com.example.login001v.view.registro
 
+import android.app.Application
 import android.app.DatePickerDialog
 import android.os.Build
 import android.widget.DatePicker
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.login001v.view.theme.Tema
+import com.example.login001v.viewmodel.AppViewModelFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -28,13 +30,16 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistroScreen(
-    vm: RegistroViewModel = viewModel(),
     onRegistroSuccess: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    val state = vm.uiState
-    val context = LocalContext.current
 
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
+    val vm: RegistroViewModel = viewModel(
+        factory = AppViewModelFactory(application)
+    )
+    val state = vm.uiState
     val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
 

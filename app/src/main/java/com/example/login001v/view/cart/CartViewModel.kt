@@ -15,13 +15,13 @@ import java.util.Locale
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.login001v.data.database.CartDatabase
+import com.example.login001v.data.database.AppDatabase
 import com.example.login001v.data.model.CartItem
 import com.example.login001v.data.model.OrderItem
 
 class CartViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dao = CartDatabase.getDatabase(application).cartDao()
+    private val dao = AppDatabase.getDatabase(application).cartDao()
 
     // Carrito en tiempo real
     val cartItems: StateFlow<List<CartItem>> = dao.getCartItems()
@@ -99,7 +99,13 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
         """.trimIndent()
 
         viewModelScope.launch {
-            dao.insertOrder(OrderItem(itemsResumen = resumenDb, totalPagado = totalFinal))
+            dao.insertOrder(
+                OrderItem(
+                    itemsResumen = resumenDb,
+                    totalPagado = totalFinal,
+                    fecha = System.currentTimeMillis()
+                )
+            )
             dao.clearCart()
             onBoletaGenerated(boletaTexto)
         }

@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Login001V"
+rootProject.name = "Pasteleria_Mil_Sabores"
 include(":app")

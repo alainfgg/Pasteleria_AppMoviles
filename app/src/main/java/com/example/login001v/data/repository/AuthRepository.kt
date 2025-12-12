@@ -16,15 +16,12 @@ class AuthRepository(
     //función QUE REGISTRA AL USUARIO
     //NO ACEPTA EMAILS DUPLICADOS ESTO
     suspend fun registrar(usuario: Usuario): Boolean {
-        return try {
-            // Verificamos si el email ya existe
-            if (usuarioDao.emailExiste(usuario.email) > 0) {
-                return false
-            }
-            usuarioDao.insertar(usuario)
-            true
-        } catch (e: Exception) {
-            false
-        }
+        // Verificamos si ya existe el email
+        val exists = usuarioDao.emailExiste(usuario.email)
+        if (exists > 0) return false
+
+        // Si no existe, insertamos
+        usuarioDao.insertar(usuario)
+        return true
     }
 }

@@ -59,8 +59,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.font.FontWeight
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.example.login001v.viewmodel.AppViewModelFactory
 import com.example.login001v.data.model.CartItem
 import com.example.login001v.view.cart.CartViewModel
 import kotlinx.coroutines.launch
@@ -74,11 +73,19 @@ fun ProductoFormScreen(
 )
 {
     val context = LocalContext.current
+    val application = context.applicationContext as Application
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    //CONEXIÓN A LOS VIEWMODEL
+    val appFactory = AppViewModelFactory(application)
+    val viewModel: ProductoViewModel = viewModel(factory = appFactory)
+    val cartViewModel: CartViewModel = viewModel(factory = appFactory)
+    val cartItems by cartViewModel.cartItems.collectAsState()
+
+    //ÁREA DE PRODUCTO
     var cantidad by remember{ mutableStateOf(TextFieldValue("")) }
     var direccion by remember{ mutableStateOf(TextFieldValue("")) }
     var mensaje by remember { mutableStateOf(TextFieldValue("")) }
-
-
     // opciones
     val tamanoOptions = listOf("15 personas", "20 personas", "30 personas", "40 personas")
     val formaOptions = listOf("Circular", "Cuadrada")
@@ -87,17 +94,6 @@ fun ProductoFormScreen(
     var selectedTamano by remember { mutableStateOf("") } // guarda tamaño de la torta
     var expandedForma by remember { mutableStateOf(false) }
     var selectedForma by remember { mutableStateOf("") } //guarda circular o cuadrada
-
-    // conectamos al viewmodel
-    val viewModel: ProductoViewModel = viewModel(
-        factory = ProductoViewModelFactory(LocalContext.current.applicationContext as Application)
-    )
-    // Implementación del carrito
-    val cartViewModel: CartViewModel = viewModel()
-    val cartItems by cartViewModel.cartItems.collectAsState() // Para el contador
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
     //variables de lógica
 
     //torta logic
@@ -356,6 +352,18 @@ fun ProductoFormScreen(
 
                             else -> R.drawable.logo
                         }
+                        //GUARDADO EN BD
+                        val producto = Producto(
+                            nombre = nombre,
+                            precio = precioTotal.toString(),
+                            cantidad = cantidad.text,
+                            direccion = direccion.text,
+                            tamano = if (esTorta) selectedTamano else "N/A",
+                            forma = if (esTorta) selectedForma else "N/A",
+                            mensaje = mensaje.text
+                        )
+                        viewModel.guardarProducto(producto)
+
                         val itemCarrito = CartItem(
                             nombre = nombre,
                             precioUnitario = precioUnitarioFinal,
@@ -367,7 +375,7 @@ fun ProductoFormScreen(
                             direccion = direccion.text
                         )
                         cartViewModel.addToCart(itemCarrito)
-
+                        //TERMINO DE GUARDADO
                         scope.launch {
                             snackbarHostState.showSnackbar("¡$nombre añadido al carrito!")
                         }
@@ -390,16 +398,6 @@ fun ProductoFormScreen(
         } // fin else (LazyColumn content)
     } //Fin Contenido
 } // fin inner
-
-class ProductoViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ProductoViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ProductoViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

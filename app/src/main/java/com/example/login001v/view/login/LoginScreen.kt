@@ -1,5 +1,6 @@
 package com.example.login001v.view.login
 
+import android.app.Application
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -22,15 +24,20 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.login001v.R
 import com.example.login001v.view.theme.Tema
+import com.example.login001v.viewmodel.AppViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    vm: LoginViewModel = viewModel(),
     onLoginSuccess: (String) -> Unit,
     onNavigateToRegistro: () -> Unit
     // ^ callback's de navegación ^
 ) {
+    val context = LocalContext.current
+    val application = context.applicationContext as Application
+    val vm: LoginViewModel = viewModel(
+        factory = AppViewModelFactory(application)
+    )
     val state = vm.uiState
     var showPass by remember { mutableStateOf(false) }
 
