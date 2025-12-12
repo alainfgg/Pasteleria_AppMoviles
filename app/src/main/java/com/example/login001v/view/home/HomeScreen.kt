@@ -159,7 +159,7 @@ fun HeroBanner() {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    "Si perteneces a Duoc, y estás de cumpleaños, ¡Canjea una torta gratis con nosotros!",
+                    "Si tienes 50 años o más, ¡Obten un 50% de descuento con tu código especial!",
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White
                 )
